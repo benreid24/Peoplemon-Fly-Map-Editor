@@ -20,4 +20,7 @@ def open_towns():
 
 def save():
     # TODO - save towns
-    view_util.popup('Heads Up', "Don't forget to copy map.db to Resources/Data/map.db")
+    view_util.popup(
+        'Heads Up',
+        "Don't forget to copy map.db to Resources/Data/map.db\nAnd put the images in Resources/Media/Images/Menu"
+    )

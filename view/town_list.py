@@ -18,11 +18,14 @@ class TownList(tk.LabelFrame):
     def _get_town(self):
         try:
             town = {
-                'name': self.town_name.get(),
+                'disp_name': self.town_name.get(),
+                'ref_name': self.town_ref.get(),
                 'description': self.town_desc.get(),
                 'image': self.town_image.get(),
                 'x': int(self.town_x.get()),
-                'y': int(self.town_y.get())
+                'y': int(self.town_y.get()),
+                'map_name': self.town_map.get(),
+                'spawn': int(self.town_spawn.get())
             }
             return town
         except:
@@ -51,15 +54,21 @@ class TownList(tk.LabelFrame):
 
         self.town_name = tk.StringVar()
         self.town_entry = tk.Entry(self, textvariable=self.town_name)
-        self.town_label = tk.Label(self, text='Name')
+        self.town_label = tk.Label(self, text='Display Name')
         self.town_label.grid(row=1, column=1)
         self.town_entry.grid(row=1, column=2)
+
+        self.town_ref = tk.StringVar()
+        self.ref_entry = tk.Entry(self, textvariable=self.town_ref)
+        self.ref_label = tk.Label(self, text='Ref Name')
+        self.ref_label.grid(row=1, column=3)
+        self.ref_entry.grid(row=1, column=4)
 
         self.town_desc = tk.StringVar()
         self.desc_label = tk.Label(self, text='Description')
         self.desc_entry = tk.Entry(self, textvariable=self.town_desc)
         self.desc_label.grid(row=2, column=1)
-        self.desc_entry.grid(row=2, column=2)
+        self.desc_entry.grid(row=2, column=2, columnspan=3, sticky=tk.W+tk.E)
 
         self.town_image = tk.StringVar()
         self.image_label = tk.Label(self, text='Image')
@@ -79,6 +88,18 @@ class TownList(tk.LabelFrame):
         self.y_label.grid(row=4, column=3)
         self.y_entry.grid(row=4, column=4)
 
+        self.town_map = tk.StringVar()
+        self.map_label = tk.Label(self, text='loadMap')
+        self.map_entry = tk.Entry(self, textvariable=self.town_map)
+        self.map_label.grid(row=5, column=1)
+        self.map_entry.grid(row=5, column=2)
+
+        self.town_spawn = tk.StringVar()
+        self.spawn_label = tk.Label(self, text='spawn #')
+        self.spawn_entry = tk.Entry(self, textvariable=self.town_spawn)
+        self.spawn_label.grid(row=5, column=3)
+        self.spawn_entry.grid(row=5, column=4)
+
         self.town_list_frame = tk.LabelFrame(self)
         self.scrollbar = tk.Scrollbar(self.town_list_frame)
 
@@ -87,7 +108,7 @@ class TownList(tk.LabelFrame):
 
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.scrollbar.config(command=self.town_list.yview)
-        self.town_list_frame.grid(column=0, row=0, rowspan=5, padx=3)
+        self.town_list_frame.grid(column=0, row=0, rowspan=6, padx=3)
 
         self.grid(row=4, column=0, padx=3, pady=20)
 
@@ -100,6 +121,22 @@ class TownList(tk.LabelFrame):
         return int(self.town_list.curselection()[0])
 
     def set_town_list(self, sl):
+        self.clear()
+        for s in sl:
+            self.town_list.insert(tk.END, s)
+
+    def set_entry(self, town):
+        self.town_name.set(town['disp_name'])
+        self.town_desc.set(town['description'])
+        self.town_image.set(town['image'])
+        self.town_x.set(str(town['x']))
+        self.town_y.set(str(town['y']))
+        self.town_ref.set(town['ref_name'])
+        self.town_map.set(town['map_name'])
+        self.town_spawn.set(str(town['spawn']))
+
+    def clear(self):
+        self.last_selection = None
         self.town_list.delete(0, tk.END)
         self.town_list.selection_clear(0, tk.END)
         self.town_name.set('')
@@ -107,15 +144,6 @@ class TownList(tk.LabelFrame):
         self.town_image.set('')
         self.town_x.set('')
         self.town_y.set('')
-        for s in sl:
-            self.town_list.insert(tk.END, s)
-
-    def set_entry(self, town):
-        self.town_name.set(town['name'])
-        self.town_desc.set(town['description'])
-        self.town_image.set(town['image'])
-        self.town_x.set(str(town['x']))
-        self.town_y.set(str(town['y']))
-
-    def clear(self):
-        self.town_list.delete(0, tk.END)
+        self.town_ref.set('')
+        self.town_map.set('')
+        self.town_spawn.set('')

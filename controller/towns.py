@@ -42,7 +42,7 @@ def reset():
 
 
 def update_view():
-    town_names = [town['name'] for town in model.town_list]
+    town_names = [town['disp_name'] for town in model.town_list]
     APP.get_town_list().set_town_list(town_names)
 
 
