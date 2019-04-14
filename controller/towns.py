@@ -1,5 +1,4 @@
 from model import towns as model
-from view import util as view_util
 
 DIRTY = False
 APP = None
@@ -10,39 +9,35 @@ def init(app):
     APP = app
 
 
-def add():
+def add(town):
     global DIRTY
 
     DIRTY = True
-    # TODO - add
+    model.add_town(town)
     update_view()
 
 
 def delete():
     global DIRTY
     DIRTY = True
-    del model.town_list[APP.get_song_list().get_selected_song()]
+    del model.town_list[APP.get_town_list().get_selected_town()]
     update_view()
 
 
 def update(town):
     global DIRTY
     DIRTY = True
-    # TODO - update
+    model.town_list[APP.get_town_list().get_selected_town()] = town
     update_view()
 
 
-def browse():
-    global DIRTY
-    DIRTY = True
-    file = view_util.get_song_file()
-    if file:
-        APP.get_song_list().set_entry(file)
+def get_town(index):
+    return model.town_list[index]
 
 
 def reset():
     model.clear()
-    APP.get_song_list().clear()
+    APP.get_town_list().clear()
     clear_dirty()
 
 
