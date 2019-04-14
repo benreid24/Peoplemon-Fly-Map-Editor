@@ -1,7 +1,5 @@
 import os
 
-import tkinter as tk
-
 from controller import towns as controller
 from .helpers import saving as file_util
 from view import util as view_util
@@ -12,14 +10,16 @@ export_file = None
 
 
 def open_towns():
-    if os.path.isfile(FILENAME):
+    try:
         controller.reset()
-        # TODO - load into model
+        model.town_list = file_util.load_towns('map.db')
         controller.update_view()
+    except:
+        view_util.error('Error loading map.db. Making new one')
 
 
 def save():
-    # TODO - save towns
+    file_util.save_towns('map.db', model.town_list)
     view_util.popup(
         'Heads Up',
         "Don't forget to copy map.db to Resources/Data/map.db\nAnd put the images in Resources/Media/Images/Menu"
